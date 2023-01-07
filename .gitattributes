@@ -1,4 +1,2 @@
-*.cpp linguist-detectable=false
-*.cc linguist-detectable=false
-*.h linguist-detectable=false
-*.html linguist-detectable=false
+web/** linguist-generated
+windows/** linguist-generated
