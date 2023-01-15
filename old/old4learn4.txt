@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class Comment {
+  final String content;
+  final Image avatar;
+
+  Comment(this.content, this.avatar);
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final Image defaultAvatar = Image(
+      image: AssetImage('assets/1003-500x500.jpg'), width: 50, height: 50);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: ListView(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).primaryColor)),
+            child: Column(
+              children: [
+                defaultAvatar,
+                Text('Lorem ipsum Ipsum lorem Qwe 128'),
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).primaryColor)),
+            child: Column(
+              children: [
+                defaultAvatar,
+                Text('Lorem ipsum Ipsum lorem Qwe 129'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CommentDetail extends StatelessWidget {
+  final Comment comment;
+
+  const _CommentDetail({super.key, required this.comment});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).primaryColor)),
+        child: Column(
+          children: [
+            comment.avatar,
+            Text(comment.content),
+          ],
+        ),
+      ),
+    );
+  }
+}

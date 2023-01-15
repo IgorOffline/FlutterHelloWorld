@@ -1,0 +1,78 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class Comment {
+  final String content;
+  final Image avatar;
+
+  Comment(this.content, this.avatar);
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      //body: Column(children: [Text('Qwe 345'), Text('Qwe 678')])
+      body: CommentDetail(comment: Comment('Lorem ipsum4', Image(
+          image: AssetImage(
+              'assets/1003-500x500.jpg'
+          ),
+          width: 50,
+          height: 50
+      ))),
+    );
+  }
+}
+
+
+
+class CommentDetail extends StatelessWidget {
+  const CommentDetail({super.key, required this.comment});
+
+  final Comment comment;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ConstrainedBox(
+        constraints: BoxConstraints(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100),
+        child: Column(
+          children: [
+            comment.avatar,
+            Text(comment.content),
+          ],
+        ),
+      )
+    );
+  }
+}
