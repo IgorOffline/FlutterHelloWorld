@@ -28,7 +28,8 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int acceptedData = 0;
+  int sum1 = 0;
+  int sum2 = 0;
   double commonSize = 50;
 
   @override
@@ -45,24 +46,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Draggable<int>(
-                          // Data is the value this Draggable stores.
-                          data: 10,
-                          feedback: Container(
-                            color: Colors.deepOrange,
-                            height: 100,
-                            width: 100,
-                            child: const Icon(Icons.directions_run),
-                          ),
-                          child: Container(
-                            height: 100.0,
-                            width: 100.0,
-                            color: Colors.lightGreenAccent,
-                            child: Center(
-                              child: WhiteKnight(size: commonSize),
-                            ),
-                          ),
-                        ),
                         DragTarget<int>(
                           builder: (
                             BuildContext context,
@@ -74,14 +57,84 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               width: 100.0,
                               color: Colors.cyan,
                               child: Center(
-                                child:
-                                    Text('Value is updated to: $acceptedData'),
+                                child: Draggable<int>(
+                                  // Data is the value this Draggable stores.
+                                  data: 10,
+                                  feedback: Container(
+                                    color: Colors.transparent,
+                                    height: 100,
+                                    width: 100,
+                                    child: Icon(Icons.directions_run),
+                                  ),
+                                  childWhenDragging: Container(
+                                    height: 100.0,
+                                    width: 100.0,
+                                    color: Colors.transparent,
+                                    child: Center(
+                                      child: Text('Child When Dragging $sum1'),
+                                    ),
+                                  ),
+                                  child: Container(
+                                    height: 100.0,
+                                    width: 100.0,
+                                    color: Colors.transparent,
+                                    child: Center(
+                                      child: Text('Draggable $sum1'),
+                                    ),
+                                  ),
+                                ),
                               ),
                             );
                           },
                           onAccept: (int data) {
                             setState(() {
-                              acceptedData += data;
+                              sum1 += data;
+                            });
+                          },
+                        ),
+                        DragTarget<int>(
+                          builder: (
+                              BuildContext context,
+                              List<dynamic> accepted,
+                              List<dynamic> rejected,
+                              ) {
+                            return Container(
+                              height: 100.0,
+                              width: 100.0,
+                              color: Colors.cyan,
+                              child: Center(
+                                child: Draggable<int>(
+                                  // Data is the value this Draggable stores.
+                                  data: 10,
+                                  feedback: Container(
+                                    color: Colors.transparent,
+                                    height: 100,
+                                    width: 100,
+                                    child: Icon(Icons.directions_run),
+                                  ),
+                                  childWhenDragging: Container(
+                                    height: 100.0,
+                                    width: 100.0,
+                                    color: Colors.transparent,
+                                    child: Center(
+                                      child: Text('Child When Dragging $sum2'),
+                                    ),
+                                  ),
+                                  child: Container(
+                                    height: 100.0,
+                                    width: 100.0,
+                                    color: Colors.transparent,
+                                    child: Center(
+                                      child: Text('Draggable $sum2'),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          onAccept: (int data) {
+                            setState(() {
+                              sum2 += data;
                             });
                           },
                         ),
