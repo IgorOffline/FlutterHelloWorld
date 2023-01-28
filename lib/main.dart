@@ -67,8 +67,8 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int sum1 = 0;
-  int sum2 = 0;
+  BoardSquare a1 = BoardSquare(BoardLetter.a, BoardNumber.n1, Piece.king, PieceColor.white);
+  BoardSquare b1 = BoardSquare(BoardLetter.b, BoardNumber.n1, Piece.king, PieceColor.black);
   double commonSize = 50;
 
   @override
@@ -85,7 +85,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        DragTarget<int>(
+                        DragTarget<BoardSquare>(
                           builder: (
                             BuildContext context,
                             List<dynamic> accepted,
@@ -96,9 +96,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               width: 100.0,
                               color: Colors.cyan,
                               child: Center(
-                                child: Draggable<int>(
+                                child: Draggable<BoardSquare>(
                                   // Data is the value this Draggable stores.
-                                  data: 10,
+                                  data: a1,
                                   feedback: Container(
                                     color: Colors.transparent,
                                     height: 100,
@@ -110,7 +110,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 100.0,
                                     color: Colors.transparent,
                                     child: Center(
-                                      child: Text('Child When Dragging $sum1'),
+                                      child: Text('Child When Dragging ${a1.pieceColor}'),
                                     ),
                                   ),
                                   child: Container(
@@ -118,20 +118,22 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 100.0,
                                     color: Colors.transparent,
                                     child: Center(
-                                      child: Text('Draggable $sum1'),
+                                      child: Text('Draggable ${a1.pieceColor}'),
                                     ),
                                   ),
                                 ),
                               ),
                             );
                           },
-                          onAccept: (int data) {
+                          onAccept: (BoardSquare data) {
                             setState(() {
-                              sum1 += data;
+                              var tempPieceColor = a1.pieceColor;
+                              a1.pieceColor = data.pieceColor;
+                              data.pieceColor = tempPieceColor;
                             });
                           },
                         ),
-                        DragTarget<int>(
+                        DragTarget<BoardSquare>(
                           builder: (
                               BuildContext context,
                               List<dynamic> accepted,
@@ -142,9 +144,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               width: 100.0,
                               color: Colors.cyan,
                               child: Center(
-                                child: Draggable<int>(
+                                child: Draggable<BoardSquare>(
                                   // Data is the value this Draggable stores.
-                                  data: 10,
+                                  data: b1,
                                   feedback: Container(
                                     color: Colors.transparent,
                                     height: 100,
@@ -156,7 +158,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 100.0,
                                     color: Colors.transparent,
                                     child: Center(
-                                      child: Text('Child When Dragging $sum2'),
+                                      child: Text('Child When Dragging ${b1.pieceColor}'),
                                     ),
                                   ),
                                   child: Container(
@@ -164,16 +166,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 100.0,
                                     color: Colors.transparent,
                                     child: Center(
-                                      child: Text('Draggable $sum2'),
+                                      child: Text('Draggable ${b1.pieceColor}'),
                                     ),
                                   ),
                                 ),
                               ),
                             );
                           },
-                          onAccept: (int data) {
+                          onAccept: (BoardSquare data) {
                             setState(() {
-                              sum2 += data;
+                              var tempPieceColor = b1.pieceColor;
+                              b1.pieceColor = data.pieceColor;
+                              data.pieceColor = tempPieceColor;
                             });
                           },
                         ),
