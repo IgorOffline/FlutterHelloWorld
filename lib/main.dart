@@ -20,6 +20,45 @@ class MyApp extends StatelessWidget {
   }
 }
 
+enum BoardLetter {
+  a, b
+}
+
+enum BoardNumber {
+  n1
+}
+
+enum Piece {
+  none, king, rook
+}
+
+enum PieceColor {
+  none, white, black
+}
+
+class BoardSquare {
+  BoardLetter letter;
+  BoardNumber number;
+  Piece piece;
+  PieceColor pieceColor;
+
+  BoardSquare(this.letter, this.number, this.piece, this.pieceColor);
+}
+
+Widget getWidgetForSquare(BoardSquare square) {
+  if (square.pieceColor == PieceColor.white) {
+    if (square.piece == Piece.king) {
+      return WhiteKing();
+    }
+  } else if (square.pieceColor == PieceColor.black) {
+    if (square.piece == Piece.king) {
+      return BlackKing();
+    }
+  }
+
+  return BlackKnight();
+}
+
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({super.key});
 
