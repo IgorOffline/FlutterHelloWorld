@@ -20,21 +20,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-enum BoardLetter {
-  a, b
-}
+enum BoardLetter { a, b }
 
-enum BoardNumber {
-  n1
-}
+enum BoardNumber { n1 }
 
-enum Piece {
-  none, king, rook
-}
+enum Piece { none, king, rook }
 
-enum PieceColor {
-  none, white, black
-}
+enum PieceColor { none, white, black }
 
 class BoardSquare {
   BoardLetter letter;
@@ -67,8 +59,10 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  BoardSquare a1 = BoardSquare(BoardLetter.a, BoardNumber.n1, Piece.king, PieceColor.white);
-  BoardSquare b1 = BoardSquare(BoardLetter.b, BoardNumber.n1, Piece.king, PieceColor.black);
+  BoardSquare a1 =
+      BoardSquare(BoardLetter.a, BoardNumber.n1, Piece.king, PieceColor.white);
+  BoardSquare b1 =
+      BoardSquare(BoardLetter.b, BoardNumber.n1, Piece.king, PieceColor.black);
   double commonSize = 50;
 
   @override
@@ -110,7 +104,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 100.0,
                                     color: Colors.transparent,
                                     child: Center(
-                                      child: Text('Child When Dragging ${a1.pieceColor}'),
+                                      child: Text(
+                                          'Child When Dragging ${a1.pieceColor}'),
                                     ),
                                   ),
                                   child: Container(
@@ -135,10 +130,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                         DragTarget<BoardSquare>(
                           builder: (
-                              BuildContext context,
-                              List<dynamic> accepted,
-                              List<dynamic> rejected,
-                              ) {
+                            BuildContext context,
+                            List<dynamic> accepted,
+                            List<dynamic> rejected,
+                          ) {
                             return Container(
                               height: 100.0,
                               width: 100.0,
@@ -158,7 +153,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 100.0,
                                     color: Colors.transparent,
                                     child: Center(
-                                      child: Text('Child When Dragging ${b1.pieceColor}'),
+                                      child: Text(
+                                          'Child When Dragging ${b1.pieceColor}'),
                                     ),
                                   ),
                                   child: Container(
@@ -185,9 +181,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ))),
             Expanded(
                 flex: 5,
-                child: Container(
-                  color: Color(0xFF388E3C),
-                )),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 250,
+                      maxWidth: 250,
+                    ),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 8,
+                      ),
+                      itemBuilder: _itemBuilder,
+                      itemCount: 8 * 8,
+                      physics: const NeverScrollableScrollPhysics(),
+                    )))
           ],
         ),
       ),
@@ -209,5 +215,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
       )
     ]);
+  }
+
+  Widget _itemBuilder(BuildContext context, int index) {
+    return GridTile(
+        child: Container(
+      decoration:
+          BoxDecoration(border: Border.all(color: Colors.black, width: 0.5)),
+    ));
   }
 }
