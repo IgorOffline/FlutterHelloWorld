@@ -51,10 +51,17 @@ Widget getWidgetForSquare(BoardSquare square) {
   return BlackKnight();
 }
 
-class BoardProperties {
-  double boardWidthHeight;
+class Board {
+  int size = 8;
+  double widthHeight = 320;
+  List<BoardSquare> squares = [];
 
-  BoardProperties(this.boardWidthHeight);
+  Board() {
+    squares.add(BoardSquare(
+        BoardLetter.a, BoardNumber.n1, Piece.king, PieceColor.white));
+    squares.add(BoardSquare(
+        BoardLetter.b, BoardNumber.n1, Piece.king, PieceColor.black));
+  }
 }
 
 class MyStatefulWidget extends StatefulWidget {
@@ -65,12 +72,7 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  final boardSize = 8;
-  BoardProperties boardProperties = BoardProperties(320);
-  BoardSquare a1 =
-      BoardSquare(BoardLetter.a, BoardNumber.n1, Piece.king, PieceColor.white);
-  BoardSquare b1 =
-      BoardSquare(BoardLetter.b, BoardNumber.n1, Piece.king, PieceColor.black);
+  Board board = Board();
 
   @override
   Widget build(BuildContext context) {
@@ -80,53 +82,54 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
           Container(
-            width: boardProperties.boardWidthHeight,
-            height: boardProperties.boardWidthHeight,
+            width: board.widthHeight,
+            height: board.widthHeight,
             margin:
                 const EdgeInsets.only(left: 10, top: 10, right: 0, bottom: 0),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2.0)),
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: boardSize,
+                crossAxisCount: board.size,
               ),
-              itemBuilder: _itemBuilder,
-              itemCount: boardSize * boardSize,
+              itemBuilder: (context, index) =>
+                  _itemBuilder(context, index, board),
+              itemCount: board.size * board.size,
               physics: const NeverScrollableScrollPhysics(),
             ),
           ),
           Row(children: <Widget>[
             FloatingActionButton(
-                onPressed: () => _plus(boardProperties),
+                onPressed: () => _plus(board),
                 tooltip: '+',
                 child: const Icon(Icons.add)),
             FloatingActionButton(
-                onPressed: () => _minus(boardProperties),
+                onPressed: () => _minus(board),
                 tooltip: '-',
                 child: const Icon(Icons.remove)),
           ])
         ]));
   }
 
-  Widget _itemBuilder(BuildContext context, int index) {
+  Widget _itemBuilder(BuildContext context, int index, Board board) {
     return GridTile(
         child: Container(
-      decoration:
-          BoxDecoration(border: Border.all(color: Colors.black, width: 0.5)),
-    ));
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 0.5)),
+            child: Text('$index,${board.squares.length}')));
   }
 
-  void _plus(BoardProperties boardProperties) {
+  void _plus(Board board) {
     setState(() {
-      boardProperties.boardWidthHeight += 11;
+      board.widthHeight += 11;
     });
-    debugPrint('_plus ${boardProperties.boardWidthHeight}');
+    debugPrint('_plus ${board.widthHeight}');
   }
 
-  void _minus(BoardProperties boardProperties) {
+  void _minus(Board board) {
     setState(() {
-      boardProperties.boardWidthHeight -= 11;
+      board.widthHeight -= 11;
     });
-    debugPrint('_minus ${boardProperties.boardWidthHeight}');
+    debugPrint('_minus ${board.widthHeight}');
   }
 }
