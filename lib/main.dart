@@ -86,7 +86,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               itemCount: 8 * 8,
               physics: const NeverScrollableScrollPhysics(),
             ),
-          )
+          ),
+          Row(children: <Widget>[
+            FloatingActionButton(
+                onPressed: _plus, tooltip: '+', child: const Icon(Icons.add)),
+            FloatingActionButton(
+                onPressed: _minus,
+                tooltip: '-',
+                child: const Icon(Icons.remove)),
+          ])
         ]));
   }
 
@@ -96,5 +104,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       decoration:
           BoxDecoration(border: Border.all(color: Colors.black, width: 0.5)),
     ));
+  }
+
+  void _plus() {
+    debugPrint('_plus');
+  }
+
+  void _minus() {
+    debugPrint('_minus');
   }
 }
