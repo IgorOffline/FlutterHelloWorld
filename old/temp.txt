@@ -1,0 +1,4 @@
+*
+Text(
+                '${board.squares.elementAt(index).letter}${board.squares.elementAt(index).number}')));
+*

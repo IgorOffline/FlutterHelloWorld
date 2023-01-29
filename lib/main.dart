@@ -60,9 +60,35 @@ enum BoardNumber {
   }
 }
 
-enum Piece { none, king, rook }
+enum Piece {
+  none("_"),
+  king("K"),
+  rook("R");
 
-enum PieceColor { none, white, black }
+  const Piece(this.name);
+
+  final String name;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+
+enum PieceColor {
+  none("_"),
+  white("W"),
+  black("B");
+
+  const PieceColor(this.name);
+
+  final String name;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
 
 class BoardSquare {
   BoardLetter letter;
@@ -71,20 +97,6 @@ class BoardSquare {
   PieceColor pieceColor;
 
   BoardSquare(this.letter, this.number, this.piece, this.pieceColor);
-}
-
-Widget getWidgetForSquare(BoardSquare square) {
-  if (square.pieceColor == PieceColor.white) {
-    if (square.piece == Piece.king) {
-      return WhiteKing();
-    }
-  } else if (square.pieceColor == PieceColor.black) {
-    if (square.piece == Piece.king) {
-      return BlackKing();
-    }
-  }
-
-  return BlackKnight();
 }
 
 class Board {
@@ -97,9 +109,29 @@ class Board {
       for (var i = 0; i < size; i++) {
         final letter = BoardLetter.values.elementAt(i);
         final number = BoardNumber.values.reversed.elementAt(j);
-        squares.add(BoardSquare(letter, number, Piece.none, PieceColor.none));
+        if (letter == BoardLetter.e && number == BoardNumber.n3) {
+          squares
+              .add(BoardSquare(letter, number, Piece.king, PieceColor.white));
+        } else {
+          squares.add(BoardSquare(letter, number, Piece.none, PieceColor.none));
+        }
       }
     }
+  }
+
+  Widget getWidgetForSquare(BoardSquare square) {
+    var pieceSize = (widthHeight / size) * 0.5;
+    if (square.pieceColor == PieceColor.white) {
+      if (square.piece == Piece.king) {
+        return WhiteKing(size: pieceSize);
+      }
+    } else if (square.pieceColor == PieceColor.black) {
+      if (square.piece == Piece.king) {
+        return BlackKing(size: pieceSize);
+      }
+    }
+
+    throw UnimplementedError('Square piece unknown');
   }
 }
 
@@ -155,8 +187,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         child: Container(
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 0.5)),
-            child: Text(
-                '${board.squares.elementAt(index).letter}${board.squares.elementAt(index).number}')));
+            child: _gridTile(index, board)));
   }
 
   void _plus(Board board) {
@@ -171,5 +202,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       board.widthHeight -= 11;
     });
     debugPrint('_minus ${board.widthHeight}');
+  }
+
+  Widget _gridTile(int index, Board board) {
+    final square = board.squares.elementAt(index);
+    if (square.piece == Piece.none) {
+      return Column(children: <Widget>[
+        Text('${square.letter}${square.number}', textScaleFactor: 0.75),
+      ]);
+    } else {
+      return Column(children: <Widget>[
+        Text('${square.letter}${square.number}', textScaleFactor: 0.75),
+        board.getWidgetForSquare(square),
+      ]);
+    }
   }
 }
