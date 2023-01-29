@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-enum BoardLetter { a, b }
+enum BoardLetter { a, b, c, d, e, f, g, h }
 
-enum BoardNumber { n1 }
+enum BoardNumber { n1, n2, n3, n4, n5, n6, n7, n8 }
 
 enum Piece { none, king, rook }
 
@@ -57,10 +57,13 @@ class Board {
   List<BoardSquare> squares = [];
 
   Board() {
-    squares.add(BoardSquare(
-        BoardLetter.a, BoardNumber.n1, Piece.king, PieceColor.white));
-    squares.add(BoardSquare(
-        BoardLetter.b, BoardNumber.n1, Piece.king, PieceColor.black));
+    for (var j = 0; j < size; j++) {
+      for (var i = 0; i < size; i++) {
+        final letter = BoardLetter.values.elementAt(i);
+        final number = BoardNumber.values.reversed.elementAt(j);
+        squares.add(BoardSquare(letter, number, Piece.none, PieceColor.none));
+      }
+    }
   }
 }
 

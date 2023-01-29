@@ -1,0 +1,39 @@
+*
+    squares.add(BoardSquare(
+        BoardLetter.a, BoardNumber.n1, Piece.king, PieceColor.white));
+    squares.add(BoardSquare(
+        BoardLetter.b, BoardNumber.n1, Piece.king, PieceColor.black));
+*
+enum BoardLetter {
+  a(letterIndex: 0), b(letterIndex: 1);
+
+  const BoardLetter({
+    required this.letterIndex,
+  });
+
+  final int letterIndex;
+}
+*
+  BoardNumber getNumberEnumReverse(int index) {
+    switch (index) {
+      case 0:
+        return n8;
+      case 1:
+        return n7;
+      case 2:
+        return n6;
+      case 3:
+        return n5;
+      case 4:
+        return n4;
+      case 5:
+        return n3;
+      case 6:
+        return n2;
+      case 7:
+        return n1;
+      default:
+        throw UnimplementedError('Index out of bounds');
+    }
+  }
+*
