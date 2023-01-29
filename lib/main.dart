@@ -51,6 +51,12 @@ Widget getWidgetForSquare(BoardSquare square) {
   return BlackKnight();
 }
 
+class BoardProperties {
+  double boardWidthHeight;
+
+  BoardProperties(this.boardWidthHeight);
+}
+
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({super.key});
 
@@ -59,6 +65,8 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  final boardSize = 8;
+  BoardProperties boardProperties = BoardProperties(320);
   BoardSquare a1 =
       BoardSquare(BoardLetter.a, BoardNumber.n1, Piece.king, PieceColor.white);
   BoardSquare b1 =
@@ -72,26 +80,28 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
           Container(
-            width: 265,
-            height: 265,
+            width: boardProperties.boardWidthHeight,
+            height: boardProperties.boardWidthHeight,
             margin:
                 const EdgeInsets.only(left: 10, top: 10, right: 0, bottom: 0),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2.0)),
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 8,
+                crossAxisCount: boardSize,
               ),
               itemBuilder: _itemBuilder,
-              itemCount: 8 * 8,
+              itemCount: boardSize * boardSize,
               physics: const NeverScrollableScrollPhysics(),
             ),
           ),
           Row(children: <Widget>[
             FloatingActionButton(
-                onPressed: _plus, tooltip: '+', child: const Icon(Icons.add)),
+                onPressed: () => _plus(boardProperties),
+                tooltip: '+',
+                child: const Icon(Icons.add)),
             FloatingActionButton(
-                onPressed: _minus,
+                onPressed: () => _minus(boardProperties),
                 tooltip: '-',
                 child: const Icon(Icons.remove)),
           ])
@@ -106,11 +116,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     ));
   }
 
-  void _plus() {
-    debugPrint('_plus');
+  void _plus(BoardProperties boardProperties) {
+    setState(() {
+      boardProperties.boardWidthHeight += 11;
+    });
+    debugPrint('_plus ${boardProperties.boardWidthHeight}');
   }
 
-  void _minus() {
-    debugPrint('_minus');
+  void _minus(BoardProperties boardProperties) {
+    setState(() {
+      boardProperties.boardWidthHeight -= 11;
+    });
+    debugPrint('_minus ${boardProperties.boardWidthHeight}');
   }
 }
