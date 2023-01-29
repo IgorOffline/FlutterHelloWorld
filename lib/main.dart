@@ -20,9 +20,45 @@ class MyApp extends StatelessWidget {
   }
 }
 
-enum BoardLetter { a, b, c, d, e, f, g, h }
+enum BoardLetter {
+  a("A"),
+  b("B"),
+  c("C"),
+  d("D"),
+  e("E"),
+  f("F"),
+  g("G"),
+  h("H");
 
-enum BoardNumber { n1, n2, n3, n4, n5, n6, n7, n8 }
+  const BoardLetter(this.name);
+
+  final String name;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+
+enum BoardNumber {
+  n1("1"),
+  n2("2"),
+  n3("3"),
+  n4("4"),
+  n5("5"),
+  n6("6"),
+  n7("7"),
+  n8("8");
+
+  const BoardNumber(this.name);
+
+  final String name;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
 
 enum Piece { none, king, rook }
 
@@ -53,7 +89,7 @@ Widget getWidgetForSquare(BoardSquare square) {
 
 class Board {
   int size = 8;
-  double widthHeight = 320;
+  double widthHeight = 441;
   List<BoardSquare> squares = [];
 
   Board() {
@@ -119,7 +155,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         child: Container(
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 0.5)),
-            child: Text('$index,${board.squares.length}')));
+            child: Text(
+                '${board.squares.elementAt(index).letter}${board.squares.elementAt(index).number}')));
   }
 
   void _plus(Board board) {
