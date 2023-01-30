@@ -2,3 +2,10 @@
 Text(
                 '${board.squares.elementAt(index).letter}${board.squares.elementAt(index).number}')));
 *
+bool squareColorFlag = false;
+*
+  bool _colorFlag(Board board) {
+    board.squareColorFlag = !board.squareColorFlag;
+    return board.squareColorFlag;
+  }
+*

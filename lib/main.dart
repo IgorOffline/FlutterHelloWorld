@@ -103,6 +103,7 @@ class Board {
   int size = 8;
   double widthHeight = 441;
   List<BoardSquare> squares = [];
+  bool squareColorFlag = true;
 
   Board() {
     for (var j = 0; j < size; j++) {
@@ -120,7 +121,7 @@ class Board {
   }
 
   Widget getWidgetForSquare(BoardSquare square) {
-    var pieceSize = (widthHeight / size) * 0.5;
+    var pieceSize = (widthHeight / size) * 0.62;
     if (square.pieceColor == PieceColor.white) {
       if (square.piece == Piece.king) {
         return WhiteKing(size: pieceSize);
@@ -186,22 +187,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return GridTile(
         child: Container(
             decoration: BoxDecoration(
+                color: _colorFlag(index, board)
+                    ? Color(0xFFF0D9B5)
+                    : Color(0xFFB58863),
                 border: Border.all(color: Colors.black, width: 0.5)),
             child: _gridTile(index, board)));
   }
 
-  void _plus(Board board) {
-    setState(() {
-      board.widthHeight += 11;
-    });
-    debugPrint('_plus ${board.widthHeight}');
-  }
-
-  void _minus(Board board) {
-    setState(() {
-      board.widthHeight -= 11;
-    });
-    debugPrint('_minus ${board.widthHeight}');
+  bool _colorFlag(int index, Board board) {
+    board.squareColorFlag = !board.squareColorFlag;
+    if (index % 8 == 0) {
+      board.squareColorFlag = !board.squareColorFlag;
+    }
+    return board.squareColorFlag;
   }
 
   Widget _gridTile(int index, Board board) {
@@ -216,5 +214,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         board.getWidgetForSquare(square),
       ]);
     }
+  }
+
+  void _plus(Board board) {
+    setState(() {
+      board.widthHeight += 11;
+    });
+    debugPrint('_plus ${board.widthHeight}');
+  }
+
+  void _minus(Board board) {
+    setState(() {
+      board.widthHeight -= 11;
+    });
+    debugPrint('_minus ${board.widthHeight}');
   }
 }
