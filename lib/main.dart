@@ -195,7 +195,20 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ? Color(0xFFF0D9B5)
                   : Color(0xFFB58863),
               border: Border.all(color: Colors.black, width: 0.5)),
-          child: _gridTile(index, board));
+          child: Draggable<BoardSquare>(
+              data: board.squares.elementAt(index),
+              feedback: Container(
+                color: Colors.transparent,
+                height: 100,
+                width: 100,
+                child: Icon(Icons.directions_run),
+              ),
+              childWhenDragging: Container(
+                  height: 100.0,
+                  width: 100.0,
+                  color: Colors.transparent,
+                  child: Icon(Icons.directions_run)),
+              child: _gridTile(index, board)));
     }));
   }
 
