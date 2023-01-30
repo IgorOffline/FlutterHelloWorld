@@ -184,14 +184,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Widget _itemBuilder(BuildContext context, int index, Board board) {
-    return GridTile(
-        child: Container(
-            decoration: BoxDecoration(
-                color: _colorFlag(index, board)
-                    ? Color(0xFFF0D9B5)
-                    : Color(0xFFB58863),
-                border: Border.all(color: Colors.black, width: 0.5)),
-            child: _gridTile(index, board)));
+    return GridTile(child: DragTarget<BoardSquare>(builder: (
+      BuildContext context,
+      List<dynamic> accepted,
+      List<dynamic> rejected,
+    ) {
+      return Container(
+          decoration: BoxDecoration(
+              color: _colorFlag(index, board)
+                  ? Color(0xFFF0D9B5)
+                  : Color(0xFFB58863),
+              border: Border.all(color: Colors.black, width: 0.5)),
+          child: _gridTile(index, board));
+    }));
   }
 
   bool _colorFlag(int index, Board board) {
