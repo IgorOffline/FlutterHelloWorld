@@ -1,80 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:sqlite3/sqlite3.dart' as sql;
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static const String _title = 'Flutter';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      title: _title,
+      home: Scaffold(
+        appBar: AppBar(title: const Text(_title)),
+        body: const FirstRoute(firstCounterInit: 0),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class FirstRoute extends StatefulWidget {
+  const FirstRoute({super.key, required this.firstCounterInit});
 
-  final String title;
+  final int firstCounterInit;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<FirstRoute> createState() => _MyStatefulWidgetState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MyStatefulWidgetState extends State<FirstRoute> {
+  late int firstCounter;
 
-  void _databaseLogic() {
-    setState(() {
-      if (_counter == 0) {
-        print('Using sqlite3 ${sql.sqlite3.version}');
-        final db = sql.sqlite3.open('second.sqlite3');
-        final sql.ResultSet resultSet = db.select('SELECT h.id_hello id, h.name FROM hello h');
-
-        for (final sql.Row row in resultSet) {
-          print('Second[id: ${row['id']}, name: ${row['name']}]');
-        }
-
-        db.dispose();
-
-        _counter++;
-      }
-    });
+  @override
+  void initState() {
+    firstCounter = widget.firstCounterInit;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        appBar: AppBar(
+          title: const Text('First Route'),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _databaseLogic,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+        body: Center(
+          child: Row(children: [
+            ElevatedButton(
+                onPressed: () async {
+                  final retVal = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              SecondRoute(secondCounterInit: firstCounter)));
+                  setState(() {
+                    firstCounter = retVal;
+                  });
+                },
+                child: const Text('Open route')),
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    ++firstCounter;
+                  });
+                },
+                child: Text('$firstCounter'))
+          ]),
+        ));
+  }
+}
+
+class SecondRoute extends StatefulWidget {
+  SecondRoute({super.key, required this.secondCounterInit});
+
+  final int secondCounterInit;
+
+  @override
+  State<SecondRoute> createState() => _SecondStatefulWidgetState();
+}
+
+class _SecondStatefulWidgetState extends State<SecondRoute> {
+  late int secondCounter;
+
+  @override
+  void initState() {
+    secondCounter = widget.secondCounterInit;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Second Route'),
+        ),
+        body: Center(
+          child: Row(children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, secondCounter);
+                },
+                child: const Text('Go back')),
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    ++secondCounter;
+                  });
+                },
+                child: Text('$secondCounter'))
+          ]),
+        ));
   }
 }
